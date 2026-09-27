@@ -103,8 +103,13 @@ export function ocrConfidence(items: TextItem[]): number {
   return chars ? sum / chars : 0;
 }
 
+// LiteParse's reasons for a page whose text layer can't be trusted. Not 'sparse-text' / 'no-text': those also
+// fire on short but exact text (a small sheet, a one-paragraph memo), which OCR would only make worse.
+const UNUSABLE_TEXT = new Set(['scanned', 'garbled', 'vector-text']);
+
 /** a page with no usable native text (scan, handwriting, text drawn as vectors) is read as an image */
-const isScanned = (p: ParsedPage) => p.complexity?.reasons.some((r) => r !== 'embedded-images') ?? false;
+const isScanned = (p: ParsedPage) =>
+  !p.text.trim() || (p.complexity?.reasons.some((r) => UNUSABLE_TEXT.has(r)) ?? false);
 
 /** translate the `ocr` option group into LiteParse config; unset fields fall through to LiteParse defaults */
 function ocrConfig(ocr: OcrOptions = {}): Partial<LiteParseConfig> {
@@ -189,11 +194,16 @@ export function createIngest(opts: IngestOptions) {
         ),
       );
 
+      const picturesOf = (page: number) =>
+        pictures.filter((i) => i.page === page).flatMap((i) => images.get(i.id) ?? []);
       return doc.pages.flatMap((p) => {
         const page = pages.get(p.pageNum);
-        if (!page) return withImages(p.markdown, images);
         // OCR'd page: its text, then its pictures
-        return [...page, ...pictures.filter((i) => i.page === p.pageNum).flatMap((i) => images.get(i.id) ?? [])];
+        if (page) return [...page, ...picturesOf(p.pageNum)];
+        // sheets: LiteParse's layout text keeps one row per line; its Markdown can merge or drop cells of a
+        // borderless grid (a 3x3 sheet lost two values)
+        if (file.mediaType === FileType.XLSX) return [text(p.text), ...picturesOf(p.pageNum)];
+        return withImages(p.markdown, images);
       });
     });
   }

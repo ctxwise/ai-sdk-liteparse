@@ -7,7 +7,16 @@
  *   node bench/olmocr.ts --name rapidocr --ocr-url http://rapidocr:8829 --limit 30
  *   dotenvx run -- node bench/olmocr.ts --name vision --vision openai/gpt-5-mini --limit 30   # no OCR, via OpenRouter
  */
-import { appendFileSync, copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import {
+  appendFileSync,
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { basename, join } from 'node:path';
 import { parseArgs } from 'node:util';
 import { createOpenAI } from '@ai-sdk/openai';
@@ -77,8 +86,7 @@ interface Row {
 mkdirSync('bench/results', { recursive: true });
 const progress = `bench/results/${args.name}.progress.jsonl`;
 const done = new Map<string, Row>(
-  (existsSync(progress) ? readFileSync(progress, 'utf8').split('
-').filter(Boolean) : [])
+  (existsSync(progress) ? readFileSync(progress, 'utf8').split('\n').filter(Boolean) : [])
     .map((line) => JSON.parse(line) as Row)
     .filter((r) => !r.error)
     .map((r) => [`${r.set}/${r.pdf}`, r]),
@@ -121,8 +129,7 @@ for (const set of args.sets.split(',')) {
     writeFileSync(join(args.out, args.name, set, `${basename(pdf, '.pdf')}_pg1_repeat1.md`), text);
     const row = { set, pdf, ms, chars: text.length, confidences, tokens: usage, error };
     rows.push(row);
-    appendFileSync(progress, `${JSON.stringify(row)}
-`);
+    appendFileSync(progress, `${JSON.stringify(row)}\n`);
     const conf = confidences.map((c) => c.toFixed(2)).join(',');
     console.log(`${set}/${pdf} ${ms.toFixed(0)} ms ${text.length} chars conf=${conf}${error ? ` ERROR ${error}` : ''}`);
   }

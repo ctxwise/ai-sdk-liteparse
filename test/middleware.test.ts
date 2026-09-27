@@ -6,7 +6,13 @@ import { createServer } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { test } from 'node:test';
 import type { LanguageModelV4CallOptions, LanguageModelV4Prompt } from '@ai-sdk/provider';
-import { FileType, type LiteparseAttachmentsOptions, liteparseAttachments } from '../src/index.ts';
+import {
+  FileType,
+  type LiteparseAttachmentsOptions,
+  liteparseAttachments,
+  mediaTypeOf,
+  noServerDownloads,
+} from '../src/index.ts';
 
 const fixture = (name: string) => readFileSync(new URL(`fixtures/${name}`, import.meta.url));
 
@@ -53,17 +59,22 @@ test('minConfidence 0 keeps OCR text even when it is poor', async () => {
 // Office needs LibreOffice: runs in the Docker image, skipped on machines without it
 const noLibreOffice = spawnSync('soffice', ['--version']).status !== 0 && 'LibreOffice not installed';
 
-test('office: docx text and its photo', { skip: noLibreOffice }, async () => {
+// regression: short Office pages were flagged 'sparse-text', OCR'd, and exact text came back as "Ql" / "us"
+test('office: docx keeps its exact text and table, plus its photo', { skip: noLibreOffice }, async () => {
   const parts = await sent(fixture('report.docx'), FileType.DOCX);
   assert.match(textOf(parts), /Revenue grew 12% to 4\.2M/);
+  assert.match(textOf(parts), /\| EU \| 1\.9M \|/);
+  assert.equal(images(parts), 1);
 });
 
-test('office: xlsx becomes a markdown table', { skip: noLibreOffice }, async () => {
-  assert.match(textOf(await sent(fixture('sales.xlsx'), FileType.XLSX)), /^\|.*\|$/m);
+test('office: xlsx keeps every cell, one row per line', { skip: noLibreOffice }, async () => {
+  const out = textOf(await sent(fixture('sales.xlsx'), FileType.XLSX));
+  assert.match(out, /Region\s+Q1\s+Q2\nEU\s+100\s+120\nUS\s+200\s+210/);
+  assert.match(out, /Rent\s+50/);
 });
 
-test('office: a slide read by page OCR keeps its photo', { skip: noLibreOffice }, async () => {
-  // regression: the slide's title OCR'd confidently and the photo was dropped
+test('office: a slide keeps its title and its photo', { skip: noLibreOffice }, async () => {
+  // regression: the slide was page-OCR'd, its title read confidently and the photo dropped
   const parts = await sent(fixture('deck.pptx'), FileType.PPTX);
   assert.match(textOf(parts), /Team/);
   assert.equal(images(parts), 1);
@@ -102,6 +113,19 @@ test("ocr engine 'none': native text stays text, every image goes to the model",
 
 test("ocr engine 'server' without a url fails at setup", () => {
   assert.throws(() => liteparseAttachments({ ocr: { engine: 'server' } }), /needs `serverUrl`/);
+});
+
+test('mediaTypeOf: known extensions, any case; unknown -> octet-stream', () => {
+  assert.equal(mediaTypeOf('Report.DOCX'), FileType.DOCX);
+  assert.equal(mediaTypeOf('scan.tif'), FileType.TIFF);
+  assert.equal(mediaTypeOf('notes.md'), 'text/markdown');
+  assert.equal(mediaTypeOf('movie.mp4'), 'application/octet-stream');
+  assert.equal(mediaTypeOf('README'), 'application/octet-stream');
+});
+
+test('noServerDownloads never downloads', async () => {
+  const url = new URL('http://169.254.169.254/latest/meta-data');
+  assert.deepEqual(await noServerDownloads([{ url, isUrlSupportedByModel: false }]), [null]);
 });
 
 test('plain text is read as-is and cut with a note', async () => {
