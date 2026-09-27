@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 import type { LanguageModelV4FilePart, LanguageModelV4Middleware } from '@ai-sdk/provider';
+import type { Experimental_DownloadFunction } from 'ai';
 import { PromiseCache } from './cache.ts';
 import { MODEL_TYPES } from './constants.ts';
 import { AttachmentError, createIngest, type IngestOptions, type Part } from './ingest.ts';
@@ -24,6 +25,13 @@ export const DEFAULTS = {
     'tables as Markdown with exact numbers. For charts: the chart type, axis labels and every data value. ' +
     'For photos and illustrations: a concise factual description. Output only the content, no preamble.',
 } as const satisfies LiteparseAttachmentsOptions;
+
+/**
+ * Pass as `experimental_download` to streamText/generateText. The AI SDK otherwise downloads URL file parts the
+ * model doesn't accept by URL - from your server, to any address a user puts in a message (SSRF).
+ * With this, nothing is downloaded server-side; URL parts go to the provider unchanged.
+ */
+export const noServerDownloads: Experimental_DownloadFunction = async (files) => files.map(() => null);
 
 const sha256 = (...data: (string | Uint8Array)[]) =>
   data.reduce((h, d) => h.update(d), createHash('sha256')).digest('hex');

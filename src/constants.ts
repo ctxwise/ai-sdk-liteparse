@@ -44,3 +44,30 @@ export const isImageType = (type: string) => IMAGE_TYPES.has(type);
 /** Read as-is, no parser: text/* and common text-based application types. */
 export const isTextType = (type: string) =>
   type.startsWith('text/') || /^application\/(json|xml|yaml|x-yaml|toml|javascript|typescript|sql)$/.test(type);
+
+// extension -> media type, for files read on the server where no browser supplies one
+const BY_EXTENSION: Readonly<Record<string, string>> = {
+  pdf: FileType.PDF,
+  docx: FileType.DOCX,
+  xlsx: FileType.XLSX,
+  pptx: FileType.PPTX,
+  png: FileType.PNG,
+  jpg: FileType.JPEG,
+  jpeg: FileType.JPEG,
+  webp: FileType.WEBP,
+  tif: FileType.TIFF,
+  tiff: FileType.TIFF,
+  gif: 'image/gif',
+  txt: FileType.TXT,
+  md: 'text/markdown',
+  csv: 'text/csv',
+  html: 'text/html',
+  json: 'application/json',
+  xml: 'application/xml',
+  yaml: 'application/yaml',
+  yml: 'application/yaml',
+};
+
+/** Media type from a file name. Unknown extensions give `application/octet-stream`, which the model is told it can't read. */
+export const mediaTypeOf = (filename: string): string =>
+  BY_EXTENSION[filename.toLowerCase().split('.').pop() ?? ''] ?? 'application/octet-stream';

@@ -6,8 +6,10 @@ export {
   isImageType,
   isTextType,
   MODEL_TYPES,
+  mediaTypeOf,
 } from './constants.ts';
 export {
+  createIngest,
   type IngestOptions,
   type InputFile,
   MIN_CONFIDENCE,
@@ -15,4 +17,4 @@ export {
   ocrConfidence,
   UnsupportedFileTypeError,
 } from './ingest.ts';
-export { DEFAULTS, type LiteparseAttachmentsOptions, liteparseAttachments } from './middleware.ts';
+export { DEFAULTS, type LiteparseAttachmentsOptions, liteparseAttachments, noServerDownloads } from './middleware.ts';
