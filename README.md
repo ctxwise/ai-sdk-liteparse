@@ -10,7 +10,7 @@ npm i @ctxwise/ai-sdk-liteparse
 
 ```ts
 import { openai } from '@ai-sdk/openai';
-import { liteparseAttachments } from '@ctxwise/ai-sdk-liteparse';
+import { liteparseAttachments, noServerDownloads } from '@ctxwise/ai-sdk-liteparse';
 import { streamText, wrapLanguageModel } from 'ai';
 
 const model = wrapLanguageModel({
@@ -19,11 +19,17 @@ const model = wrapLanguageModel({
 });
 
 // file parts in user messages are parsed before the model sees them
-const result = streamText({ model, messages });
+const result = streamText({
+  model,
+  messages,
+  experimental_download: noServerDownloads, // never fetch URLs found in user messages (SSRF)
+});
 ```
 
 Every file part in a user message is replaced by what the model can read, wrapped in `<document name="...">`.
 Parsed files are cached by content hash, so chat history that re-sends a file every turn parses it once.
+Runnable examples — Next.js route, plain Node server, structured extraction, parsing without a model — are in
+[examples/](examples).
 
 ## Why
 
@@ -49,7 +55,9 @@ PNG / JPEG / WEBP / TIFF ──────────────────�
 processImage():  OCR ─► confidence ≥ minConfidence ?  OCR text  :  vision model
 ```
 
-- **Native text first.** Text, tables and headings come straight from the file — no OCR, exact.
+- **Native text first.** Text, tables and headings come straight from the file — no OCR, exact. A page is
+  read as an image only when its text layer is missing or unusable (a scan, garbled fonts, text drawn as
+  vector outlines) — never just because it has little text. Spreadsheets keep one row per line.
 - **One image pipeline.** An uploaded photo, a chart inside a DOCX and a scanned PDF page all go through the
   same `processImage()`.
 - **Vision model.** With `visionModel`, a low-confidence image is turned into text by that model, so the main
@@ -121,8 +129,8 @@ image and scored with olmOCR's official scorer. OCR text kept on every page to m
 
 | engine | score (± 95% CI) | old scans | long tiny text | median / p95 per page |
 |---|---|---|---|---|
-| Tesseract | 35.9% ± 4.6 | 20.1% | 51.8% | 6.2 s / 43.8 s |
-| RapidOCR (PP-OCRv5) | 38.3% ± 4.9 | 24.4% | 52.3% | 12.7 s / 54.2 s |
+| Tesseract | 35.9% ± 4.7 | 20.1% | 51.8% | 2.6 s / 12.0 s |
+| RapidOCR (PP-OCRv5) | 38.3% ± 4.9 | 24.4% | 52.3% | 6.2 s / 14.9 s |
 | Vision model only (`none`) | pending² | | | |
 
 ² Awaiting the vision-model run (gpt-5-mini via OpenRouter).
@@ -133,13 +141,13 @@ image and scored with olmOCR's official scorer. OCR text kept on every page to m
 Takeaways:
 
 - **RapidOCR is not measurably more accurate** on this sample — the gap is inside the confidence interval —
-  and it is about 2x slower on CPU. Keep Tesseract as the default; use the RapidOCR service to move OCR off
+  and it is about 2x slower per page on the same CPU budget. Keep Tesseract as the default; use the RapidOCR service to move OCR off
   the app's CPUs, not for accuracy.
 - **Old scans are hard for any OCR engine** (20–24%): this is where the vision model earns its tokens.
 - **Most "long tiny text" pages have a real text layer**: they parse natively in ~0.1 s, no OCR at all.
 
-Timings come from a shared dev machine that was also running another heavy job; compare them, don't size
-capacity from them. Method, commands and caveats: [bench/README.md](bench/README.md).
+Timings: the app container capped at 2 vCPU / 4 GB (a small ECS task); RapidOCR in its own container, also
+2 vCPU, over HTTP; pages one at a time. Method, commands and caveats: [bench/README.md](bench/README.md).
 
 ## Deploy (Linux / ECS)
 
@@ -157,7 +165,7 @@ ENV TESSDATA_PREFIX=/usr/share/tessdata
 
 On small tasks (2 vCPU / 4 GB):
 
-- Peak memory in the benchmark was 850–920 MB per process on dense scans.
+- Peak memory in the benchmark was 770 MB (Tesseract) to 880 MB (with RapidOCR) per process on dense scans.
 - For a hard per-document deadline and crash isolation, use a worker pool:
   `liteparse: { poolSize: 1, parseTimeoutMs: 60_000 }` — each worker is a separate process.
 - `ocr.numWorkers` already caps at `min(4, CPUs)`; keep `ocr.dpi` at 150 unless scans need 200.
@@ -181,7 +189,8 @@ On small tasks (2 vCPU / 4 GB):
 | `onError` | `console.warn` | errors that were turned into a note or a passthrough |
 
 Also exported: `FileType`, `DOCUMENT_TYPES`, `IMAGE_TYPES`, `MODEL_TYPES`, `isDocumentType`, `isImageType`,
-`isTextType`, `ocrConfidence`, `MIN_CONFIDENCE`, `DEFAULTS`.
+`isTextType`, `mediaTypeOf` (media type from a file name, for files read on the server), `noServerDownloads`,
+`createIngest` (the parsing pipeline without a model), `ocrConfidence`, `MIN_CONFIDENCE`, `DEFAULTS`.
 
 ## Develop
 
@@ -190,7 +199,7 @@ npm test                                               # LiteParse for real on t
 docker build -t ai-sdk-liteparse . && docker run --rm ai-sdk-liteparse   # all tests on Linux, as in production
 ```
 
-Benchmark: [bench/README.md](bench/README.md). Example: [examples/summarize-file.ts](examples/summarize-file.ts).
+Benchmark: [bench/README.md](bench/README.md). Examples: [examples/](examples).
 
 ## License
 

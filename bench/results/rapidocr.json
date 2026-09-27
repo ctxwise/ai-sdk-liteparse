@@ -3,430 +3,738 @@
     "name": "rapidocr",
     "pages": 60,
     "errors": 0,
-    "p50ms": 12724,
-    "p95ms": 54164,
-    "peakRssMB": 922
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "p50ms": 6194,
+    "p95ms": 14887,
+    "peakRssMB": 881
   },
   "rows": [
     {
       "set": "old_scans",
       "pdf": "1.pdf",
-      "ms": 25192.136733000003,
+      "ms": 12619.915620000002,
       "chars": 627,
-      "confidences": [0.7180217401920885]
+      "confidences": [
+        0.7180217401920885
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "10.pdf",
-      "ms": 28874.137893000006,
+      "ms": 10374.127851,
       "chars": 966,
-      "confidences": [0.9596991252064444]
+      "confidences": [
+        0.9596991252064444
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "11.pdf",
-      "ms": 28360.163521999995,
+      "ms": 8807.465916000005,
       "chars": 1334,
-      "confidences": [0.9420772396156606]
+      "confidences": [
+        0.9420772396156606
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "12.pdf",
-      "ms": 20593.448005,
+      "ms": 4836.7948710000055,
       "chars": 441,
-      "confidences": [0.6300992176675921]
+      "confidences": [
+        0.6300992176675921
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "13.pdf",
-      "ms": 12864.125895999998,
+      "ms": 4574.963269,
       "chars": 197,
-      "confidences": [0.5984130472592686]
+      "confidences": [
+        0.5984130472592686
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "14.pdf",
-      "ms": 20599.302790999995,
+      "ms": 6657.1201100000035,
       "chars": 270,
-      "confidences": [0.6215066103683169]
+      "confidences": [
+        0.6215066103683169
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "15.pdf",
-      "ms": 22789.703349999996,
+      "ms": 6450.518133999998,
       "chars": 572,
-      "confidences": [0.9597969959328946]
+      "confidences": [
+        0.9597969959328946
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "16.pdf",
-      "ms": 29603.649271000002,
+      "ms": 10443.044527999999,
       "chars": 1392,
-      "confidences": [0.9530497680152703]
+      "confidences": [
+        0.9530497680152703
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "17.pdf",
-      "ms": 24762.373246000003,
+      "ms": 8223.222857,
       "chars": 1100,
-      "confidences": [0.9452674492622195]
+      "confidences": [
+        0.9452674492622195
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "18.pdf",
-      "ms": 19342.279834999994,
+      "ms": 6743.900034000006,
       "chars": 527,
-      "confidences": [0.8486755568451352]
+      "confidences": [
+        0.8486755568451352
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "19.pdf",
-      "ms": 25776.869326000015,
+      "ms": 7457.667006000003,
       "chars": 589,
-      "confidences": [0.6619812026059717]
+      "confidences": [
+        0.6619812026059717
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "2.pdf",
-      "ms": 24336.76610900002,
+      "ms": 11674.431578999996,
       "chars": 706,
-      "confidences": [0.949679104338831]
+      "confidences": [
+        0.949679104338831
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "20.pdf",
-      "ms": 21255.810862000042,
+      "ms": 12100.329194999998,
       "chars": 560,
-      "confidences": [0.6413228374531889]
+      "confidences": [
+        0.6413228374531889
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "21.pdf",
-      "ms": 20534.477029,
+      "ms": 10088.586247,
       "chars": 398,
-      "confidences": [0.6566695178675855]
+      "confidences": [
+        0.6566695178675855
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "22.pdf",
-      "ms": 14063.876649000042,
+      "ms": 6194.000107999993,
       "chars": 189,
-      "confidences": [0.7911410243847431]
+      "confidences": [
+        0.7911410243847431
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "23.pdf",
-      "ms": 15596.556607999955,
+      "ms": 7247.806375999993,
       "chars": 540,
-      "confidences": [0.9483105445979163]
+      "confidences": [
+        0.9483105445979163
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "24.pdf",
-      "ms": 22793.841877,
+      "ms": 8871.912887000013,
       "chars": 1167,
-      "confidences": [0.9623992724685704]
+      "confidences": [
+        0.9623992724685704
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "25.pdf",
-      "ms": 23014.092181999993,
+      "ms": 7903.151647999999,
       "chars": 463,
-      "confidences": [0.9424560591047564]
+      "confidences": [
+        0.9424560591047564
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "26.pdf",
-      "ms": 19813.242828999995,
+      "ms": 8377.269795,
       "chars": 398,
-      "confidences": [0.7507894823425695]
+      "confidences": [
+        0.7507894823425695
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "27.pdf",
-      "ms": 14040.960317999998,
+      "ms": 8223.337475000008,
       "chars": 281,
-      "confidences": [0.7656413548103365]
+      "confidences": [
+        0.7656413548103365
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "28.pdf",
-      "ms": 26032.864524999983,
+      "ms": 13618.645439000014,
       "chars": 1015,
-      "confidences": [0.9307650364216556]
+      "confidences": [
+        0.9307650364216556
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "29.pdf",
-      "ms": 12723.520921000047,
+      "ms": 6786.764229000022,
       "chars": 192,
-      "confidences": [0.8342185415179524]
+      "confidences": [
+        0.8342185415179524
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "3.pdf",
-      "ms": 15995.629366000008,
+      "ms": 8345.798553,
       "chars": 755,
-      "confidences": [0.7319084289808606]
+      "confidences": [
+        0.7319084289808606
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "30.pdf",
-      "ms": 11357.422176000022,
+      "ms": 10340.035254000017,
       "chars": 827,
-      "confidences": [0.7256041144650516]
+      "confidences": [
+        0.7256041144650516
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "31.pdf",
-      "ms": 13827.081082999997,
+      "ms": 14574.347772000008,
       "chars": 2166,
-      "confidences": [0.9406602087959294]
+      "confidences": [
+        0.9406602087959294
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "32.pdf",
-      "ms": 15079.995028999983,
+      "ms": 9058.04979000002,
       "chars": 446,
-      "confidences": [0.598958337569938]
+      "confidences": [
+        0.598958337569938
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "33.pdf",
-      "ms": 21894.68638800003,
+      "ms": 11099.006389000016,
       "chars": 1078,
-      "confidences": [0.6380882666725572]
+      "confidences": [
+        0.6380882666725572
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "34.pdf",
-      "ms": 12719.700461000088,
+      "ms": 6021.809312999976,
       "chars": 445,
-      "confidences": [0.6607945573211896]
+      "confidences": [
+        0.6607945573211896
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "35.pdf",
-      "ms": 27704.015287999995,
+      "ms": 11563.896420999983,
       "chars": 891,
-      "confidences": [0.638764186209117]
+      "confidences": [
+        0.638764186209117
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "old_scans",
       "pdf": "36.pdf",
-      "ms": 31392.425920999958,
+      "ms": 12765.635031000042,
       "chars": 1888,
-      "confidences": [0.9670046760560754]
+      "confidences": [
+        0.9670046760560754
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "10a_pg1.pdf",
-      "ms": 54164.305268,
+      "ms": 17402.367353000038,
       "chars": 6232,
-      "confidences": [0.9349579486144675]
+      "confidences": [
+        0.9349579486144675
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "10b_pg1.pdf",
-      "ms": 56288.794333000085,
+      "ms": 14886.668138000008,
       "chars": 6208,
-      "confidences": [0.9349391353590616]
+      "confidences": [
+        0.9349391353590616
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "10c_pg1.pdf",
-      "ms": 54519.630005999934,
+      "ms": 14965.568499999994,
       "chars": 6270,
-      "confidences": [0.9349477996601113]
+      "confidences": [
+        0.9349477996601113
+      ],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "11_pg145_pg1.pdf",
-      "ms": 294.94911000004504,
+      "ms": 25.398736000002827,
       "chars": 4861,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "11_pg146_pg1.pdf",
-      "ms": 107.53716299997177,
+      "ms": 24.06213800003752,
       "chars": 5012,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "11_pg161_pg1.pdf",
-      "ms": 86.76566599996295,
+      "ms": 22.518904999946244,
       "chars": 4669,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "11_pg186_pg1.pdf",
-      "ms": 61.647038000053726,
+      "ms": 18.118333999998868,
       "chars": 4718,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "11_pg252_pg1.pdf",
-      "ms": 52.90688400005456,
+      "ms": 18.09963599999901,
       "chars": 4761,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "11_pg36_pg1.pdf",
-      "ms": 61.007477000006475,
+      "ms": 16.531689000024926,
       "chars": 4904,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "11_pg375_pg1.pdf",
-      "ms": 73.5844620000571,
+      "ms": 19.32094500004314,
       "chars": 5610,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "11_pg377_pg1.pdf",
-      "ms": 53.605745000066236,
+      "ms": 16.78068299998995,
       "chars": 4791,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "11_pg418_pg1.pdf",
-      "ms": 47.96379999991041,
+      "ms": 17.365390999999363,
       "chars": 4445,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "11_pg421_pg1.pdf",
-      "ms": 49.64509500004351,
+      "ms": 17.540078999998514,
       "chars": 4328,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "11_pg57_pg1.pdf",
-      "ms": 59.62992099998519,
+      "ms": 18.44160499999998,
       "chars": 4769,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "12_pg174_pg1.pdf",
-      "ms": 246.00344599992968,
+      "ms": 36.32130499999039,
       "chars": 18865,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "12_pg199_pg1.pdf",
-      "ms": 128.7676260001026,
+      "ms": 30.701654999982566,
       "chars": 18707,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "12_pg275_pg1.pdf",
-      "ms": 120.53899899998214,
+      "ms": 38.517825999995694,
       "chars": 19116,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "12_pg71_pg1.pdf",
-      "ms": 115.99138099991251,
+      "ms": 41.86575299996184,
       "chars": 19338,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "12_pg81_pg1.pdf",
-      "ms": 51.03873300005216,
+      "ms": 30.9788009999902,
       "chars": 18820,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "13_pg162_pg1.pdf",
-      "ms": 88.82271500001661,
+      "ms": 31.77295299997786,
       "chars": 9385,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "13_pg165_pg1.pdf",
-      "ms": 101.3123669999186,
+      "ms": 31.159239000000525,
       "chars": 11444,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "13_pg32_pg1.pdf",
-      "ms": 78.69629300001543,
+      "ms": 27.92473400000017,
       "chars": 8960,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "13_pg475_pg1.pdf",
-      "ms": 75.5781629999401,
+      "ms": 24.89733200002229,
       "chars": 8997,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "13_pg501_pg1.pdf",
-      "ms": 106.9505979999667,
+      "ms": 28.18455999996513,
       "chars": 11784,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "13_pg531_pg1.pdf",
-      "ms": 84.03538400004618,
+      "ms": 22.981473999971058,
       "chars": 10761,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "13_pg556_pg1.pdf",
-      "ms": 133.305502000032,
+      "ms": 30.145478999998886,
       "chars": 10398,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "13_pg566_pg1.pdf",
-      "ms": 116.41088199999649,
+      "ms": 25.679018999973778,
       "chars": 11762,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "13_pg639_pg1.pdf",
-      "ms": 71.52713499998208,
+      "ms": 25.06911299994681,
       "chars": 8890,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "13_pg67_pg1.pdf",
-      "ms": 47.67894899996463,
+      "ms": 26.547122000018135,
       "chars": 9334,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     },
     {
       "set": "long_tiny_text",
       "pdf": "13_pg811_pg1.pdf",
-      "ms": 86.15060500008985,
+      "ms": 27.48651899996912,
       "chars": 9169,
-      "confidences": []
+      "confidences": [],
+      "tokens": {
+        "input": 0,
+        "output": 0
+      }
     }
   ]
 }

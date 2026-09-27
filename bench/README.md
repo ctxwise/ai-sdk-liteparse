@@ -34,12 +34,12 @@ docker build -t ai-sdk-liteparse .
 docker build -t ai-sdk-liteparse-rapidocr ocr/rapidocr
 docker build -f bench/score.Dockerfile -t olmocr-score bench
 docker network create lpbench
-docker run -d --name rapidocr --network lpbench ai-sdk-liteparse-rapidocr
+docker run -d --name rapidocr --network lpbench --cpus 2 -e OCR_THREADS=2 ai-sdk-liteparse-rapidocr
 
 # outputs (Linux, like production)
 V="-v $PWD/bench/data:/app/bench/data -v $PWD/bench/results:/app/bench/results"
-docker run --rm --network lpbench $V ai-sdk-liteparse node bench/olmocr.ts --name tesseract --limit 30
-docker run --rm --network lpbench $V ai-sdk-liteparse node bench/olmocr.ts --name rapidocr --ocr-url http://rapidocr:8829 --limit 30
+docker run --rm --cpus 2 --memory 4g --network lpbench $V ai-sdk-liteparse node bench/olmocr.ts --name tesseract --limit 30
+docker run --rm --cpus 2 --memory 4g --network lpbench $V ai-sdk-liteparse node bench/olmocr.ts --name rapidocr --ocr-url http://rapidocr:8829 --limit 30
 dotenvx run -- node bench/olmocr.ts --name vision --vision openai/gpt-5-mini --limit 30   # OPENROUTER_API_KEY
 
 # score + charts (docs/images) + bench/results/report.json
@@ -53,6 +53,7 @@ charts can be redone without re-running OCR or the model.
 ## Caveats
 
 - 60 pages: differences under the ±5-point confidence interval are not real differences.
-- Timings are from one shared dev machine (16 vCPU Docker VM) that was also running another heavy job; use them
-  to compare engines, not as capacity numbers. RapidOCR ran in its own container, over HTTP.
+- Timings: app container capped at 2 vCPU / 4 GB (`--cpus 2 --memory 4g`), RapidOCR in its own 2-vCPU
+  container (`OCR_THREADS=2`), pages one at a time, on an otherwise idle dev machine. Real ECS numbers will differ
+  with CPU generation; re-run on your task size before sizing.
 - Only English-heavy sets. Other scripts need their own run (`ocr.language`, a RapidOCR model per language).

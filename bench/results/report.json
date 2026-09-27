@@ -9,9 +9,11 @@
       "name": "tesseract",
       "pages": 60,
       "errors": 0,
-      "p50ms": 6228,
-      "p95ms": 43825,
-      "peakRssMB": 844
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "p50ms": 2604,
+      "p95ms": 12025,
+      "peakRssMB": 768
     },
     "rapidocr": {
       "score": 38.32577521755117,
@@ -22,9 +24,11 @@
       "name": "rapidocr",
       "pages": 60,
       "errors": 0,
-      "p50ms": 12724,
-      "p95ms": 54164,
-      "peakRssMB": 922
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "p50ms": 6194,
+      "p95ms": 14887,
+      "peakRssMB": 881
     }
   },
   "tolerance": 1.0
