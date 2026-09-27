@@ -1,0 +1,10 @@
+# Optional OCR service. Started only on demand: docker compose --profile rapidocr up -d
+# Then: liteparseAttachments({ ocr: { engine: 'server', serverUrl: 'http://127.0.0.1:8829' } })
+services:
+  rapidocr:
+    build: ocr/rapidocr
+    profiles: [rapidocr]
+    ports: ["8829:8829"]
+    restart: unless-stopped
+    environment:
+      OCR_THREADS: "4"  # ONNX threads per request; concurrent requests = CPUs / OCR_THREADS

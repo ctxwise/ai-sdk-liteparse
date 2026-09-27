@@ -1,0 +1,63 @@
+{
+  "name": "@ctxwise/ai-sdk-liteparse",
+  "version": "0.1.0",
+  "description": "Vercel AI SDK middleware that turns chat attachments (PDF, Office, images, scans) into LLM-ready text with LiteParse - in-process, no server - using vision only where OCR is not confident",
+  "keywords": [
+    "ai-sdk",
+    "vercel-ai",
+    "liteparse",
+    "attachments",
+    "pdf",
+    "ocr",
+    "docx",
+    "pptx",
+    "xlsx",
+    "middleware",
+    "llm"
+  ],
+  "license": "MIT",
+  "author": "ctxwise",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p .",
+    "test": "node --test \"test/*.test.ts\"",
+    "bench": "node bench/olmocr.ts",
+    "lint": "biome check .",
+    "format": "biome check --write .",
+    "prepublishOnly": "npm run typecheck && npm run lint && npm test && npm run build"
+  },
+  "dependencies": {
+    "@llamaindex/liteparse": "^2.14.7"
+  },
+  "peerDependencies": {
+    "@ai-sdk/provider": "^4.0.0",
+    "ai": "^7.0.0"
+  },
+  "devDependencies": {
+    "@ai-sdk/openai": "^4.0.0",
+    "@ai-sdk/provider": "^4.0.18",
+    "@biomejs/biome": "2.5.14",
+    "@types/node": "^22.20.4",
+    "ai": "^7.0.117",
+    "typescript": "^7.0.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

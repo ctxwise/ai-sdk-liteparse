@@ -1,0 +1,7 @@
+node_modules
+dist
+.git
+ocr
+bench/data
+
+bench/results

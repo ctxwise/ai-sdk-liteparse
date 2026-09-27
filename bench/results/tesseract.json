@@ -1,0 +1,432 @@
+{
+  "summary": {
+    "name": "tesseract",
+    "pages": 60,
+    "errors": 0,
+    "p50ms": 6228,
+    "p95ms": 43825,
+    "peakRssMB": 844
+  },
+  "rows": [
+    {
+      "set": "old_scans",
+      "pdf": "1.pdf",
+      "ms": 11303.819227,
+      "chars": 18,
+      "confidences": [0.6001111202769809]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "10.pdf",
+      "ms": 12671.855909,
+      "chars": 822,
+      "confidences": [0.9230761342132423]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "11.pdf",
+      "ms": 29240.798236000002,
+      "chars": 1173,
+      "confidences": [0.9343508943931069]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "12.pdf",
+      "ms": 6695.265996000002,
+      "chars": 42,
+      "confidences": [0.41800000179897656]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "13.pdf",
+      "ms": 3690.8430549999975,
+      "chars": 4,
+      "confidences": [0.44233333733346725]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "14.pdf",
+      "ms": 6227.868086999995,
+      "chars": 12,
+      "confidences": [0]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "15.pdf",
+      "ms": 10468.164825999993,
+      "chars": 558,
+      "confidences": [0.9215925096940364]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "16.pdf",
+      "ms": 18453.384950000007,
+      "chars": 1441,
+      "confidences": [0.9075983206690302]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "17.pdf",
+      "ms": 12495.308029000007,
+      "chars": 1118,
+      "confidences": [0.9001803467077996]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "18.pdf",
+      "ms": 7752.560890000008,
+      "chars": 67,
+      "confidences": [0.5513863624496893]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "19.pdf",
+      "ms": 13510.133478000018,
+      "chars": 12,
+      "confidences": [0]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "2.pdf",
+      "ms": 11641.253232000017,
+      "chars": 678,
+      "confidences": [0.8939064347836939]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "20.pdf",
+      "ms": 7032.700624000019,
+      "chars": 12,
+      "confidences": [0]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "21.pdf",
+      "ms": 7821.714888000017,
+      "chars": 12,
+      "confidences": [0]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "22.pdf",
+      "ms": 6346.6992250000185,
+      "chars": 12,
+      "confidences": [0]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "23.pdf",
+      "ms": 14222.70086099999,
+      "chars": 598,
+      "confidences": [0.8998355854067717]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "24.pdf",
+      "ms": 17410.560855999996,
+      "chars": 1206,
+      "confidences": [0.9386307297086497]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "25.pdf",
+      "ms": 9349.273190999986,
+      "chars": 427,
+      "confidences": [0.9215619288542479]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "26.pdf",
+      "ms": 4730.40452500002,
+      "chars": 12,
+      "confidences": [0]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "27.pdf",
+      "ms": 15540.111407999997,
+      "chars": 46,
+      "confidences": [0.8867567535993215]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "28.pdf",
+      "ms": 30065.73862000002,
+      "chars": 974,
+      "confidences": [0.9331159057364364]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "29.pdf",
+      "ms": 3690.8399799999897,
+      "chars": 12,
+      "confidences": [0]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "3.pdf",
+      "ms": 17377.490969999984,
+      "chars": 153,
+      "confidences": [0.8675847437422154]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "30.pdf",
+      "ms": 7524.660053999978,
+      "chars": 54,
+      "confidences": [0.5225000033775965]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "31.pdf",
+      "ms": 37279.101827000035,
+      "chars": 2119,
+      "confidences": [0.8633686854983821]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "32.pdf",
+      "ms": 10217.044156000018,
+      "chars": 16,
+      "confidences": [0.4732999950647354]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "33.pdf",
+      "ms": 14506.191139000002,
+      "chars": 28,
+      "confidences": [0.38619999488194784]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "34.pdf",
+      "ms": 8810.970244999975,
+      "chars": 12,
+      "confidences": [0]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "35.pdf",
+      "ms": 35824.40010500001,
+      "chars": 261,
+      "confidences": [0.44952317934162567]
+    },
+    {
+      "set": "old_scans",
+      "pdf": "36.pdf",
+      "ms": 43825.03565599996,
+      "chars": 1831,
+      "confidences": [0.8370292963809334]
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "10a_pg1.pdf",
+      "ms": 20113.42635700002,
+      "chars": 6273,
+      "confidences": [0.9050279102682406]
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "10b_pg1.pdf",
+      "ms": 67064.38560400001,
+      "chars": 6317,
+      "confidences": [0.9147203515877419]
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "10c_pg1.pdf",
+      "ms": 57074.52092400007,
+      "chars": 6341,
+      "confidences": [0.9233789395469391]
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "11_pg145_pg1.pdf",
+      "ms": 313.9406440000748,
+      "chars": 4861,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "11_pg146_pg1.pdf",
+      "ms": 236.0168410000624,
+      "chars": 5012,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "11_pg161_pg1.pdf",
+      "ms": 89.86917999992147,
+      "chars": 4669,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "11_pg186_pg1.pdf",
+      "ms": 152.2210859999759,
+      "chars": 4718,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "11_pg252_pg1.pdf",
+      "ms": 134.0451040000189,
+      "chars": 4761,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "11_pg36_pg1.pdf",
+      "ms": 101.50687000004109,
+      "chars": 4904,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "11_pg375_pg1.pdf",
+      "ms": 67.15834500000346,
+      "chars": 5610,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "11_pg377_pg1.pdf",
+      "ms": 114.26306499994826,
+      "chars": 4791,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "11_pg418_pg1.pdf",
+      "ms": 71.80337099998724,
+      "chars": 4445,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "11_pg421_pg1.pdf",
+      "ms": 70.4029889999656,
+      "chars": 4328,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "11_pg57_pg1.pdf",
+      "ms": 77.03229699993972,
+      "chars": 4769,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "12_pg174_pg1.pdf",
+      "ms": 152.41363099997398,
+      "chars": 18865,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "12_pg199_pg1.pdf",
+      "ms": 129.91543000005186,
+      "chars": 18707,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "12_pg275_pg1.pdf",
+      "ms": 163.78386199998204,
+      "chars": 19116,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "12_pg71_pg1.pdf",
+      "ms": 134.83851899998263,
+      "chars": 19338,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "12_pg81_pg1.pdf",
+      "ms": 100.18414899997879,
+      "chars": 18820,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "13_pg162_pg1.pdf",
+      "ms": 74.04593100002967,
+      "chars": 9385,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "13_pg165_pg1.pdf",
+      "ms": 402.58868499996606,
+      "chars": 11444,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "13_pg32_pg1.pdf",
+      "ms": 248.366001999937,
+      "chars": 8960,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "13_pg475_pg1.pdf",
+      "ms": 87.38675000006333,
+      "chars": 8997,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "13_pg501_pg1.pdf",
+      "ms": 69.58974900003523,
+      "chars": 11784,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "13_pg531_pg1.pdf",
+      "ms": 105.19908200006466,
+      "chars": 10761,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "13_pg556_pg1.pdf",
+      "ms": 150.46960800001398,
+      "chars": 10398,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "13_pg566_pg1.pdf",
+      "ms": 78.57575399999041,
+      "chars": 11762,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "13_pg639_pg1.pdf",
+      "ms": 98.13744399999268,
+      "chars": 8890,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "13_pg67_pg1.pdf",
+      "ms": 176.08101900003385,
+      "chars": 9334,
+      "confidences": []
+    },
+    {
+      "set": "long_tiny_text",
+      "pdf": "13_pg811_pg1.pdf",
+      "ms": 101.96951600001194,
+      "chars": 9169,
+      "confidences": []
+    }
+  ]
+}

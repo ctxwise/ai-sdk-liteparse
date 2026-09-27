@@ -1,0 +1,31 @@
+{
+  "engines": {
+    "tesseract": {
+      "score": 35.94037259468072,
+      "by_set": {
+        "old_scans": 20.121951219512194,
+        "long_tiny_text": 51.75879396984924
+      },
+      "name": "tesseract",
+      "pages": 60,
+      "errors": 0,
+      "p50ms": 6228,
+      "p95ms": 43825,
+      "peakRssMB": 844
+    },
+    "rapidocr": {
+      "score": 38.32577521755117,
+      "by_set": {
+        "old_scans": 24.390243902439025,
+        "long_tiny_text": 52.26130653266332
+      },
+      "name": "rapidocr",
+      "pages": 60,
+      "errors": 0,
+      "p50ms": 12724,
+      "p95ms": 54164,
+      "peakRssMB": 922
+    }
+  },
+  "tolerance": 1.0
+}
