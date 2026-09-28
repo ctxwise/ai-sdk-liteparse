@@ -6,7 +6,7 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": ["**", "!!**/dist", "!package-lock.json", "!bench/.venv"]
+    "includes": ["**", "!!**/dist", "!package-lock.json"]
   },
   "formatter": {
     "enabled": true,
@@ -37,7 +37,7 @@
   },
   "overrides": [
     {
-      "includes": ["test/**", "bench/**", "examples/**"],
+      "includes": ["test/**", "examples/**"],
       "linter": {
         "rules": {
           "suspicious": {

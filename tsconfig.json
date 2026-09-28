@@ -15,5 +15,5 @@
       "@ctxwise/ai-sdk-liteparse": ["./src/index.ts"]
     }
   },
-  "include": ["src", "test", "examples", "bench"]
+  "include": ["src", "test", "examples"]
 }

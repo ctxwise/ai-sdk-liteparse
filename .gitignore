@@ -3,5 +3,3 @@ dist/
 *.tgz
 .env
 .env.keys
-bench/.venv/
-bench/data/
