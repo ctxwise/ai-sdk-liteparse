@@ -39,14 +39,6 @@ export interface OcrOptions {
   serverUrl?: string;
   /** extra HTTP headers sent with every request to `serverUrl` (e.g. auth). */
   serverHeaders?: Record<string, string>;
-  /** OCR language: a Tesseract code (`eng`, `deu`) for the built-in engine, ISO-639-1 (`en`) for servers. */
-  language?: string;
-  /** render DPI for scanned pages and OCR input; higher improves accuracy at a memory cost. */
-  dpi?: number;
-  /** concurrent OCR workers. @default min(4, CPU count) — avoids oversubscription on small (2 vCPU) boxes. */
-  numWorkers?: number;
-  /** path to a `tessdata` directory (built-in Tesseract engine only). */
-  tessdataPath?: string;
 }
 
 export interface IngestOptions {
@@ -63,18 +55,17 @@ export interface IngestOptions {
   visionPrompt: string;
   /** OCR backend: built-in Tesseract (default) or an external server (RapidOCR, PaddleOCR, ...) */
   ocr?: OcrOptions;
-  /** LiteParse settings, e.g. `{ ocrLanguage: 'deu' }` or `{ poolSize: 2, parseTimeoutMs: 60_000 }` */
+  /** LiteParse settings, e.g. `{ ocrLanguage: 'deu', dpi: 200 }` or `{ poolSize: 1, parseTimeoutMs: 60_000 }` */
   liteparse?: Partial<LiteParseConfig> & PoolOptions;
   /** called for every OCR'd image; log it to tune `minConfidence` for your engine and documents */
   onOcr?: (confidence: number, toVision: boolean) => void;
 }
 
 /**
- * Default `minConfidence` per OCR engine. Engines calibrate confidence differently, so one number can't fit
- * both: on olmOCR-bench (bench/README.md) OCR text starts passing about half the checks at 0.90 for
- * Tesseract and 0.93 for RapidOCR; below 0.85 it passes under a quarter.
+ * Default `minConfidence` per OCR engine; engines scale confidence differently. Measured on olmOCR-bench (README):
+ * a vision model beat OCR text on nearly every scanned page, so only the most confident OCR skips it.
  */
-export const MIN_CONFIDENCE = { tesseract: 0.9, server: 0.93 } as const;
+export const MIN_CONFIDENCE = { tesseract: 0.94, server: 0.96 } as const;
 
 /** error whose message is safe to show the model */
 export class AttachmentError extends Error {}
@@ -92,7 +83,7 @@ const IMAGE_FORMATS: Readonly<Record<string, string>> = { jpg: FileType.JPEG, jp
 const text = (t: string): Part => ({ type: 'text', text: t });
 
 /** OCR confidence of the whole image: per-item scores weighted by text length; no text at all = 0 */
-export function ocrConfidence(items: TextItem[]): number {
+function ocrConfidence(items: TextItem[]): number {
   let chars = 0;
   let sum = 0;
   for (const i of items) {
@@ -111,13 +102,9 @@ const UNUSABLE_TEXT = new Set(['scanned', 'garbled', 'vector-text']);
 const isScanned = (p: ParsedPage) =>
   !p.text.trim() || (p.complexity?.reasons.some((r) => UNUSABLE_TEXT.has(r)) ?? false);
 
-/** translate the `ocr` option group into LiteParse config; unset fields fall through to LiteParse defaults */
+/** the `ocr` option as LiteParse config */
 function ocrConfig(ocr: OcrOptions = {}): Partial<LiteParseConfig> {
-  const config: Partial<LiteParseConfig> = { numWorkers: Math.min(4, Math.max(1, cpus().length)) };
-  if (ocr.language) config.ocrLanguage = ocr.language;
-  if (ocr.dpi) config.dpi = ocr.dpi;
-  if (ocr.numWorkers) config.numWorkers = ocr.numWorkers;
-  if (ocr.tessdataPath) config.tessdataPath = ocr.tessdataPath;
+  const config: Partial<LiteParseConfig> = {};
   if (ocr.engine === 'server') {
     // fail at setup, not by silently OCR-ing with Tesseract instead
     if (!ocr.serverUrl) throw new TypeError("ocr: engine 'server' needs `serverUrl`");
@@ -131,8 +118,9 @@ function ocrConfig(ocr: OcrOptions = {}): Partial<LiteParseConfig> {
 
 export function createIngest(opts: IngestOptions) {
   const minConfidence = opts.minConfidence ?? MIN_CONFIDENCE[opts.ocr?.engine === 'server' ? 'server' : 'tesseract'];
-  // `ocr` wins over the raw `liteparse` passthrough so the backend is always explicit
-  const shared = { ...opts.liteparse, ...ocrConfig(opts.ocr) };
+  // OCR workers capped at 4 so a small (2 vCPU) box isn't oversubscribed; `liteparse` can override it,
+  // but not the engine chosen with `ocr`
+  const shared = { numWorkers: Math.min(4, cpus().length), ...opts.liteparse, ...ocrConfig(opts.ocr) };
   // documents: native text only; everything raster is OCR'd by processImage, so nothing is read twice
   const documents = new LiteParse({
     ...shared,

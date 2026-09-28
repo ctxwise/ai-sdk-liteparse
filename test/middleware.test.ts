@@ -33,7 +33,7 @@ const textOf = (parts: { text?: string }[]) => parts.map((p) => p.text ?? '').jo
 const images = (parts: { type: string }[]) => parts.filter((p) => p.type === 'file').length;
 
 test('clean scan: OCR is confident, the model gets text only', async () => {
-  const parts = await sent(fixture('scan.pdf'), FileType.PDF);
+  const parts = await sent(fixture('scan.pdf'), FileType.PDF, { minConfidence: 0.9 }); // this scan OCRs at 0.93
   assert.match(textOf(parts), /Alan Turing/);
   assert.equal(images(parts), 0);
 });

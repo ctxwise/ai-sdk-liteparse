@@ -95,25 +95,26 @@ independently of the app. `OCR_THREADS` (default 4) sets ONNX threads per reques
 ## Choosing `minConfidence`
 
 OCR engines report a confidence per line. It is the engine's own estimate, **not a measure of correctness**,
-and engines calibrate it differently — RapidOCR's scores sit higher than Tesseract's on the same pages.
+and engines scale it differently — RapidOCR's scores sit higher than Tesseract's on the same pages.
 
 ![Page confidence vs checks passed](docs/images/confidence.png)
 
-Per page, on [olmOCR-bench](#benchmark) (share of human-verified checks the OCR text passes):
+The threshold was chosen by replaying routing on the [benchmark](#benchmark) at every value from 0.50 to 1.00:
+a page whose OCR confidence is at or above the threshold keeps its OCR text, anything below goes to the vision
+model. The rule: the cheapest threshold whose score is within 1 point of the best.
 
-| page confidence | Tesseract | RapidOCR |
-|---|---|---|
-| below 0.85 | 0–20% | 0–22% |
-| 0.85 – 0.90 | 24% | – |
-| 0.90 – 0.93 | 50% | – |
-| 0.93 and above | 28%¹ | 48–53% |
+![Quality vs share of pages sent to the vision model](docs/images/threshold.png)
 
-¹ 3 pages.
+There is no knee: quality rises all the way until every page that needed OCR goes to the vision model. So the
+defaults (`MIN_CONFIDENCE`) are **0.94 for Tesseract and 0.96 for an OCR server** (tuned on RapidOCR) —
+only near-perfect OCR skips the vision model. What that means in practice:
 
-So the default threshold depends on the engine: **0.90 for Tesseract, 0.93 for an OCR server** (tuned on
-RapidOCR), exported as `MIN_CONFIDENCE`. Below it, OCR text fails most checks and the page goes to the vision
-model. These defaults are provisional until the vision-model run is in the benchmark: the final choice is the
-cheapest threshold whose routed score is within 1 point of the best (see [bench/README.md](bench/README.md)).
+- **With `visionModel`:** scans and pictures are read by the vision model; OCR saves the call only on very
+  clean pages. gpt-5-mini cost about $0.005 per page image in the benchmark.
+- **Without `visionModel`:** low-confidence images go to the main model as images; OCR is what turns the rest
+  into cheap text.
+- **Cheaper, lower quality:** set a lower `minConfidence` (e.g. 0.85) to keep more OCR text and send fewer
+  images.
 
 For your own documents, log what the pipeline sees and set `minConfidence` explicitly:
 
@@ -124,30 +125,31 @@ liteparseAttachments({ minConfidence: 0.9, onOcr: (confidence, toVision) => metr
 ## Benchmark
 
 [olmOCR-bench](https://huggingface.co/datasets/allenai/olmOCR-bench) `old_scans` + `long_tiny_text`: the first
-30 pages of each (60 pages, 363 human-verified checks), run through this package's real pipeline in the Linux
-image and scored with olmOCR's official scorer. OCR text kept on every page to measure the engines alone.
+30 pages of each, sorted by name (60 pages, 363 human-verified checks). Every page went through this package's
+real pipeline in the Linux image and was scored with olmOCR's official scorer (`olmocr[bench]==0.4.27`).
+The OCR rows keep OCR text on every page to measure the engines alone.
 
-| engine | score (± 95% CI) | old scans | long tiny text | median / p95 per page |
+| mode | score (± 95% CI) | old scans | long tiny text | median / p95 per page |
 |---|---|---|---|---|
-| Tesseract | 35.9% ± 4.7 | 20.1% | 51.8% | 2.6 s / 12.0 s |
-| RapidOCR (PP-OCRv5) | 38.3% ± 4.9 | 24.4% | 52.3% | 6.2 s / 14.9 s |
-| Vision model only (`none`) | pending² | | | |
+| Tesseract | 35.9% ± 4.8 | 20.1% | 51.8% | 2.6 s / 12.0 s |
+| RapidOCR (PP-OCRv5) | 38.3% ± 4.7 | 24.4% | 52.3% | 6.2 s / 14.9 s |
+| Vision model only (`engine: 'none'`, gpt-5-mini) | **51.6% ± 5.3** | **49.4%** | 53.8% | 15.5 s / 86.5 s |
+| Tesseract, vision below 0.94 (default) | 51.6% | | | |
 
-² Awaiting the vision-model run (gpt-5-mini via OpenRouter).
-
-![Accuracy by engine](docs/images/quality.png)
+![Accuracy by mode](docs/images/quality.png)
 ![Speed per page](docs/images/speed.png)
 
 Takeaways:
 
-- **RapidOCR is not measurably more accurate** on this sample — the gap is inside the confidence interval —
-  and it is about 2x slower per page on the same CPU budget. Keep Tesseract as the default; use the RapidOCR service to move OCR off
-  the app's CPUs, not for accuracy.
-- **Old scans are hard for any OCR engine** (20–24%): this is where the vision model earns its tokens.
-- **Most "long tiny text" pages have a real text layer**: they parse natively in ~0.1 s, no OCR at all.
+- **The vision model more than doubles accuracy on old scans** (49% vs 20–24%). This is where it earns its
+  tokens: the whole 60-page run cost about $0.16 (124K input + 63K output tokens).
+- **RapidOCR is not measurably more accurate than Tesseract** (inside the confidence interval) and is about 2x
+  slower per page. Keep Tesseract as the default; use the RapidOCR service to move OCR off the app's CPUs.
+- **Pages with a real text layer need neither**: 27 of the 30 "long tiny text" pages parsed natively in ~0.1 s.
 
-Timings: the app container capped at 2 vCPU / 4 GB (a small ECS task); RapidOCR in its own container, also
-2 vCPU, over HTTP; pages one at a time. Method, commands and caveats: [bench/README.md](bench/README.md).
+Timings: app container capped at 2 vCPU / 4 GB (a small ECS task); RapidOCR in its own 2-vCPU container over
+HTTP; pages one at a time; vision times include the API round trip. 60 pages: differences under the ±5-point
+interval are not real differences, and only English-heavy sets were measured.
 
 ## Deploy (Linux / ECS)
 
@@ -168,14 +170,14 @@ On small tasks (2 vCPU / 4 GB):
 - Peak memory in the benchmark was 770 MB (Tesseract) to 880 MB (with RapidOCR) per process on dense scans.
 - For a hard per-document deadline and crash isolation, use a worker pool:
   `liteparse: { poolSize: 1, parseTimeoutMs: 60_000 }` — each worker is a separate process.
-- `ocr.numWorkers` already caps at `min(4, CPUs)`; keep `ocr.dpi` at 150 unless scans need 200.
+- OCR workers already cap at `min(4, CPUs)`; keep `liteparse.dpi` at 150 unless scans need 200.
 - Lower `cacheMB` and `maxFileBytes` if the task runs other work.
 
 ## Options
 
 | option | default | |
 |---|---|---|
-| `ocr` | `{ engine: 'tesseract' }` | `engine`, `serverUrl`, `serverHeaders`, `language`, `dpi`, `numWorkers`, `tessdataPath` |
+| `ocr` | `{ engine: 'tesseract' }` | `engine` (`tesseract` / `server` / `none`), `serverUrl`, `serverHeaders` |
 | `minConfidence` | per engine (`MIN_CONFIDENCE`) | OCR below this (0-1) goes to the vision model; an image with no text scores 0 |
 | `visionModel` | – | e.g. `openai('gpt-5-mini')`; unset = images go to the main model |
 | `visionPrompt` | see `DEFAULTS` | instruction for `visionModel` |
@@ -185,12 +187,11 @@ On small tasks (2 vCPU / 4 GB):
 | `maxTextChars` | `200000` | plain-text files are cut after this, with a note |
 | `maxFileBytes` | `50 MB` | larger files are not parsed |
 | `cacheMB` | `256` | in-memory cache of parsed files, by sha256 |
-| `liteparse` | – | raw LiteParse config, e.g. `{ poolSize: 1, parseTimeoutMs: 60000 }` |
+| `liteparse` | – | LiteParse config, e.g. `{ ocrLanguage: 'deu', dpi: 200 }` or `{ poolSize: 1, parseTimeoutMs: 60000 }` |
 | `onError` | `console.warn` | errors that were turned into a note or a passthrough |
 
-Also exported: `FileType`, `DOCUMENT_TYPES`, `IMAGE_TYPES`, `MODEL_TYPES`, `isDocumentType`, `isImageType`,
-`isTextType`, `mediaTypeOf` (media type from a file name, for files read on the server), `noServerDownloads`,
-`createIngest` (the parsing pipeline without a model), `ocrConfidence`, `MIN_CONFIDENCE`, `DEFAULTS`.
+Also exported: `FileType`, `mediaTypeOf` (media type from a file name, for files read on the server),
+`noServerDownloads`, `createIngest` (the parsing pipeline without a model), `MIN_CONFIDENCE`, `DEFAULTS`.
 
 ## Develop
 
@@ -199,7 +200,7 @@ npm test                                               # LiteParse for real on t
 docker build -t ai-sdk-liteparse . && docker run --rm ai-sdk-liteparse   # all tests on Linux, as in production
 ```
 
-Benchmark: [bench/README.md](bench/README.md). Examples: [examples/](examples).
+Examples: [examples/](examples).
 
 ## License
 
