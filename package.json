@@ -56,6 +56,14 @@
     "ai": "^7.0.117",
     "typescript": "^7.0.2"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ctxwise/ai-sdk-liteparse.git"
+  },
+  "homepage": "https://github.com/ctxwise/ai-sdk-liteparse#readme",
+  "bugs": {
+    "url": "https://github.com/ctxwise/ai-sdk-liteparse/issues"
+  },
   "publishConfig": {
     "access": "public"
   }

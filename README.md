@@ -8,6 +8,9 @@ in your own Node process. No parsing server. A vision model is used only where O
 npm i @ctxwise/ai-sdk-liteparse
 ```
 
+> Not on npm yet. Until the first release: clone this repository, `npm install && npm run build && npm pack`,
+> then `npm i` the resulting `.tgz` in your app.
+
 ```ts
 import { openai } from '@ai-sdk/openai';
 import { liteparseAttachments, noServerDownloads } from '@ctxwise/ai-sdk-liteparse';
@@ -201,6 +204,12 @@ docker build -t ai-sdk-liteparse . && docker run --rm ai-sdk-liteparse   # all t
 ```
 
 Examples: [examples/](examples).
+
+## Related
+
+- [`@ctxwise/ai-sdk-docling`](https://github.com/ctxwise/ai-sdk-docling): the same middleware backed by a
+  [docling-serve](https://github.com/ctxwise/docling-serve) server instead of an in-process parser — layout
+  models, picture classification and table structure, at the cost of running a service.
 
 ## License
 
