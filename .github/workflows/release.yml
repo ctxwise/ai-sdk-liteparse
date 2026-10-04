@@ -1,0 +1,45 @@
+name: release
+# On every push to main, release-please keeps a release PR up to date (version from the conventional commits,
+# CHANGELOG.md). Merging that PR tags vX.Y.Z and creates the GitHub release; the publish job then puts it on npm.
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: googleapis/release-please-action@v5
+        id: release
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  publish:
+    needs: release-please
+    # off until the repository variable NPM_PUBLISH is set to "true" (Settings > Secrets and variables > Actions)
+    if: needs.release-please.outputs.release_created == 'true' && vars.NPM_PUBLISH == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # npm trusted publishing (OIDC): no npm token stored in GitHub
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          cache: npm
+      - run: npm ci
+      # prepublishOnly: typecheck, lint, unit tests, build. Auth: the NPM_TOKEN secret, or npm trusted publishing
+      # (no secret) once the package's trusted publisher is set to this workflow on npmjs.com
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

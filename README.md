@@ -205,6 +205,11 @@ docker build -t ai-sdk-liteparse . && docker run --rm ai-sdk-liteparse   # all t
 
 Examples: [examples/](https://github.com/ctxwise/ai-sdk-liteparse/tree/main/examples).
 
+Releases are automated with [release-please](https://github.com/googleapis/release-please): commits on `main`
+in the [Conventional Commits](https://www.conventionalcommits.org) format keep a release pull request open
+(`feat:` bumps the minor version; `fix:`, `perf:` and `docs:` the patch). Merging it tags the version, creates
+the GitHub release and publishes to npm. Nothing is merged automatically.
+
 ## Related
 
 - [`@ctxwise/ai-sdk-docling`](https://github.com/ctxwise/ai-sdk-docling): the same middleware backed by a
