@@ -47,22 +47,15 @@ Runnable examples (Next.js route, plain Node server, structured extraction, pars
 
 ## How files are routed
 
-```
-PDF  ─┐
-DOCX ─┤                    text, tables, headings ──────────► text
-PPTX ─┼─► LiteParse ─┬─► pictures ─────────┐
-XLSX ─┘              └─► pages without     │
-                         usable text ──────┼─► processImage()
-PNG / JPEG / WEBP / TIFF ──────────────────┘
-
-processImage():  OCR ─► confidence ≥ minConfidence ?  OCR text  :  vision model
-```
+1. **Documents** (PDF, DOCX, PPTX, XLSX) go to LiteParse. Their text, tables and headings become text directly.
+2. **Pictures inside documents** and **pages without usable text** (scans, handwriting) become images.
+3. **Uploaded images** (PNG, JPEG, WEBP, TIFF) are images from the start.
+4. Every image, whatever its source, goes through one function, `processImage()`: OCR first; if the OCR
+   confidence is at least `minConfidence` the OCR text is kept, otherwise the image goes to the vision model.
 
 - **Native text first.** Text, tables and headings come straight from the file: no OCR, exact. A page is
   read as an image only when its text layer is missing or unusable (a scan, garbled fonts, text drawn as
   vector outlines), never just because it has little text. Spreadsheets keep one row per line.
-- **One image pipeline.** An uploaded photo, a chart inside a DOCX and a scanned PDF page all go through the
-  same `processImage()`.
 - **Vision model.** With `visionModel`, a low-confidence image is turned into text by that model, so the main
   model gets text only. Without it, the image itself goes to the main model.
 - **Text files** (`text/*`, JSON, XML, YAML, ...) are read as-is. **Other types** get a short note; PDFs and

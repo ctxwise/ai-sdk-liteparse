@@ -1,7 +1,7 @@
 {
   "name": "@ctxwise/ai-sdk-liteparse",
   "version": "0.1.0",
-  "description": "Vercel AI SDK middleware that turns chat attachments (PDF, Office, images, scans) into LLM-ready text with LiteParse - in-process, no server - using vision only where OCR is not confident",
+  "description": "Vercel AI SDK middleware that turns chat attachments (PDF, Office, images, scans) into LLM-ready text with LiteParse, in-process with no server, using vision only where OCR is not confident",
   "keywords": [
     "ai-sdk",
     "vercel-ai",
