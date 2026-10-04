@@ -1,5 +1,11 @@
 # @ctxwise/ai-sdk-liteparse
 
+[![npm](https://img.shields.io/npm/v/@ctxwise/ai-sdk-liteparse?color=2a78d6)](https://www.npmjs.com/package/@ctxwise/ai-sdk-liteparse)
+[![CI](https://github.com/ctxwise/ai-sdk-liteparse/actions/workflows/ci.yml/badge.svg)](https://github.com/ctxwise/ai-sdk-liteparse/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-2a78d6)](https://github.com/ctxwise/ai-sdk-liteparse/blob/main/LICENSE)
+[![Node](https://img.shields.io/badge/node-%3E%3D22-2a78d6)](https://github.com/ctxwise/ai-sdk-liteparse/blob/main/package.json)
+[![AI SDK](https://img.shields.io/badge/AI%20SDK-v7-000000)](https://ai-sdk.dev)
+
 [Vercel AI SDK](https://ai-sdk.dev) middleware that turns chat attachments (PDFs, scans, Word, Excel,
 PowerPoint, images) into text the model can read, using [LiteParse](https://github.com/run-llama/liteparse)
 in your own Node process. No parsing server. A vision model is used only where OCR is not confident.
@@ -8,8 +14,9 @@ in your own Node process. No parsing server. A vision model is used only where O
 npm i @ctxwise/ai-sdk-liteparse
 ```
 
-> Not on npm yet. Until the first release: clone this repository, `npm install && npm run build && npm pack`,
-> then `npm i` the resulting `.tgz` in your app.
+Requirements: Node.js 22 or newer, and the AI SDK v7 (`ai`, `@ai-sdk/provider`) as peer dependencies. It runs
+on the server only (Node runtime, not Edge), on Linux, macOS and Windows. PDFs and images need nothing else;
+Office files need LibreOffice installed (see [Deploy](#deploy-linux--ecs)).
 
 ```ts
 import { openai } from '@ai-sdk/openai';
@@ -32,7 +39,7 @@ const result = streamText({
 Every file part in a user message is replaced by what the model can read, wrapped in `<document name="...">`.
 Parsed files are cached by content hash, so chat history that re-sends a file every turn parses it once.
 Runnable examples (Next.js route, plain Node server, structured extraction, parsing without a model) are in
-[examples/](examples).
+[examples/](https://github.com/ctxwise/ai-sdk-liteparse/tree/main/examples).
 
 ## Why
 
@@ -77,7 +84,7 @@ liteparseAttachments({ ocr: { engine: 'none' } });                              
 | `server` | any HTTP service speaking LiteParse's [`POST /ocr` contract](https://github.com/run-llama/liteparse/blob/main/OCR_API_SPEC.md) | offloading OCR to its own scalable service; other engines |
 | `none` | nowhere | native text + every image to the vision model; fastest parse, most vision tokens |
 
-**RapidOCR service.** [ocr/rapidocr](ocr/rapidocr) is a ready server: PP-OCRv5 on ONNX Runtime, CPU only,
+**RapidOCR service.** [ocr/rapidocr](https://github.com/ctxwise/ai-sdk-liteparse/tree/main/ocr/rapidocr) is a ready server: PP-OCRv5 on ONNX Runtime, CPU only,
 models baked into the image at build time. It is not part of the npm package and runs only when you start it:
 
 ```bash
@@ -93,13 +100,13 @@ independently of the app. `OCR_THREADS` (default 4) sets ONNX threads per reques
 OCR engines report a confidence per line. It is the engine's own estimate, **not a measure of correctness**,
 and engines scale it differently: RapidOCR's scores sit higher than Tesseract's on the same pages.
 
-![Page confidence vs checks passed](docs/images/confidence.png)
+![Page confidence vs checks passed](https://raw.githubusercontent.com/ctxwise/ai-sdk-liteparse/main/docs/images/confidence.png)
 
 The threshold was chosen by replaying routing on the [benchmark](#benchmark) at every value from 0.50 to 1.00:
 a page whose OCR confidence is at or above the threshold keeps its OCR text, anything below goes to the vision
 model. The rule: the cheapest threshold whose score is within 1 point of the best.
 
-![Quality vs share of pages sent to the vision model](docs/images/threshold.png)
+![Quality vs share of pages sent to the vision model](https://raw.githubusercontent.com/ctxwise/ai-sdk-liteparse/main/docs/images/threshold.png)
 
 There is no knee: quality rises all the way until every page that needed OCR goes to the vision model. So the
 defaults (`MIN_CONFIDENCE`) are **0.94 for Tesseract and 0.96 for an OCR server** (tuned on RapidOCR):
@@ -132,8 +139,8 @@ The OCR rows keep OCR text on every page to measure the engines alone.
 | Vision model only (`engine: 'none'`, gpt-5-mini) | **51.6% ± 5.3** | **49.4%** | 53.8% | 15.5 s / 86.5 s |
 | Tesseract, vision below 0.94 (default) | 51.6% | | | |
 
-![Accuracy by mode](docs/images/quality.png)
-![Speed per page](docs/images/speed.png)
+![Accuracy by mode](https://raw.githubusercontent.com/ctxwise/ai-sdk-liteparse/main/docs/images/quality.png)
+![Speed per page](https://raw.githubusercontent.com/ctxwise/ai-sdk-liteparse/main/docs/images/speed.png)
 
 Takeaways:
 
@@ -150,7 +157,7 @@ interval are not real differences, and only English-heavy sets were measured.
 ## Deploy (Linux / ECS)
 
 PDFs and images need nothing but the npm package. Office files need LibreOffice. Add to your app image
-(see [Dockerfile](Dockerfile)):
+(see [Dockerfile](https://github.com/ctxwise/ai-sdk-liteparse/blob/main/Dockerfile)):
 
 ```dockerfile
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates fonts-dejavu-core \
@@ -196,7 +203,7 @@ npm test                                               # LiteParse for real on t
 docker build -t ai-sdk-liteparse . && docker run --rm ai-sdk-liteparse   # all tests on Linux, as in production
 ```
 
-Examples: [examples/](examples).
+Examples: [examples/](https://github.com/ctxwise/ai-sdk-liteparse/tree/main/examples).
 
 ## Related
 
