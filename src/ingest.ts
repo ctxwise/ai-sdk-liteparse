@@ -25,7 +25,7 @@ export interface InputFile {
 }
 
 /**
- * OCR backend selection. Maps onto LiteParse config; the package stays pure TypeScript — an external
+ * OCR backend selection. Maps onto LiteParse config; the package stays pure TypeScript: an external
  * engine (RapidOCR, PaddleOCR, ...) is just an HTTP server at `serverUrl`, never a dependency here.
  */
 export interface OcrOptions {

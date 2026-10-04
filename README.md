@@ -1,7 +1,7 @@
 # @ctxwise/ai-sdk-liteparse
 
-[Vercel AI SDK](https://ai-sdk.dev) middleware that turns chat attachments — PDFs, scans, Word, Excel,
-PowerPoint, images — into text the model can read, using [LiteParse](https://github.com/run-llama/liteparse)
+[Vercel AI SDK](https://ai-sdk.dev) middleware that turns chat attachments (PDFs, scans, Word, Excel,
+PowerPoint, images) into text the model can read, using [LiteParse](https://github.com/run-llama/liteparse)
 in your own Node process. No parsing server. A vision model is used only where OCR is not confident.
 
 ```bash
@@ -31,7 +31,7 @@ const result = streamText({
 
 Every file part in a user message is replaced by what the model can read, wrapped in `<document name="...">`.
 Parsed files are cached by content hash, so chat history that re-sends a file every turn parses it once.
-Runnable examples — Next.js route, plain Node server, structured extraction, parsing without a model — are in
+Runnable examples (Next.js route, plain Node server, structured extraction, parsing without a model) are in
 [examples/](examples).
 
 ## Why
@@ -39,7 +39,7 @@ Runnable examples — Next.js route, plain Node server, structured extraction, p
 - **In-process.** LiteParse is a native Node module (PDFium + Tesseract). No Python, no Docker sidecar, no
   network hop for the common case.
 - **OCR first, vision second.** Scans and pictures are OCR'd; only what OCR can't read confidently goes to a
-  vision model — which is where the tokens and latency go.
+  vision model, which is where the tokens and latency go.
 - **Pluggable OCR.** Built-in Tesseract by default, an external OCR service (e.g. RapidOCR) when you want it,
   or no OCR at all. The package itself stays pure TypeScript with one runtime dependency.
 - **Measured.** Engines and thresholds are chosen from a public benchmark with human-verified checks
@@ -58,9 +58,9 @@ PNG / JPEG / WEBP / TIFF ──────────────────�
 processImage():  OCR ─► confidence ≥ minConfidence ?  OCR text  :  vision model
 ```
 
-- **Native text first.** Text, tables and headings come straight from the file — no OCR, exact. A page is
+- **Native text first.** Text, tables and headings come straight from the file: no OCR, exact. A page is
   read as an image only when its text layer is missing or unusable (a scan, garbled fonts, text drawn as
-  vector outlines) — never just because it has little text. Spreadsheets keep one row per line.
+  vector outlines), never just because it has little text. Spreadsheets keep one row per line.
 - **One image pipeline.** An uploaded photo, a chart inside a DOCX and a scanned PDF page all go through the
   same `processImage()`.
 - **Vision model.** With `visionModel`, a low-confidence image is turned into text by that model, so the main
@@ -82,7 +82,7 @@ liteparseAttachments({ ocr: { engine: 'none' } });                              
 |---|---|---|
 | `tesseract` (default) | inside LiteParse, in your process | most apps; zero setup |
 | `server` | any HTTP service speaking LiteParse's [`POST /ocr` contract](https://github.com/run-llama/liteparse/blob/main/OCR_API_SPEC.md) | offloading OCR to its own scalable service; other engines |
-| `none` | – | native text + every image to the vision model; fastest parse, most vision tokens |
+| `none` | nowhere | native text + every image to the vision model; fastest parse, most vision tokens |
 
 **RapidOCR service.** [ocr/rapidocr](ocr/rapidocr) is a ready server: PP-OCRv5 on ONNX Runtime, CPU only,
 models baked into the image at build time. It is not part of the npm package and runs only when you start it:
@@ -98,7 +98,7 @@ independently of the app. `OCR_THREADS` (default 4) sets ONNX threads per reques
 ## Choosing `minConfidence`
 
 OCR engines report a confidence per line. It is the engine's own estimate, **not a measure of correctness**,
-and engines scale it differently — RapidOCR's scores sit higher than Tesseract's on the same pages.
+and engines scale it differently: RapidOCR's scores sit higher than Tesseract's on the same pages.
 
 ![Page confidence vs checks passed](docs/images/confidence.png)
 
@@ -109,7 +109,7 @@ model. The rule: the cheapest threshold whose score is within 1 point of the bes
 ![Quality vs share of pages sent to the vision model](docs/images/threshold.png)
 
 There is no knee: quality rises all the way until every page that needed OCR goes to the vision model. So the
-defaults (`MIN_CONFIDENCE`) are **0.94 for Tesseract and 0.96 for an OCR server** (tuned on RapidOCR) —
+defaults (`MIN_CONFIDENCE`) are **0.94 for Tesseract and 0.96 for an OCR server** (tuned on RapidOCR):
 only near-perfect OCR skips the vision model. What that means in practice:
 
 - **With `visionModel`:** scans and pictures are read by the vision model; OCR saves the call only on very
@@ -144,7 +144,7 @@ The OCR rows keep OCR text on every page to measure the engines alone.
 
 Takeaways:
 
-- **The vision model more than doubles accuracy on old scans** (49% vs 20–24%). This is where it earns its
+- **The vision model more than doubles accuracy on old scans** (49% vs 20 to 24%). This is where it earns its
   tokens: the whole 60-page run cost about $0.16 (124K input + 63K output tokens).
 - **RapidOCR is not measurably more accurate than Tesseract** (inside the confidence interval) and is about 2x
   slower per page. Keep Tesseract as the default; use the RapidOCR service to move OCR off the app's CPUs.
@@ -172,7 +172,7 @@ On small tasks (2 vCPU / 4 GB):
 
 - Peak memory in the benchmark was 770 MB (Tesseract) to 880 MB (with RapidOCR) per process on dense scans.
 - For a hard per-document deadline and crash isolation, use a worker pool:
-  `liteparse: { poolSize: 1, parseTimeoutMs: 60_000 }` — each worker is a separate process.
+  `liteparse: { poolSize: 1, parseTimeoutMs: 60_000 }` (each worker is a separate process).
 - OCR workers already cap at `min(4, CPUs)`; keep `liteparse.dpi` at 150 unless scans need 200.
 - Lower `cacheMB` and `maxFileBytes` if the task runs other work.
 
@@ -182,15 +182,15 @@ On small tasks (2 vCPU / 4 GB):
 |---|---|---|
 | `ocr` | `{ engine: 'tesseract' }` | `engine` (`tesseract` / `server` / `none`), `serverUrl`, `serverHeaders` |
 | `minConfidence` | per engine (`MIN_CONFIDENCE`) | OCR below this (0-1) goes to the vision model; an image with no text scores 0 |
-| `visionModel` | – | e.g. `openai('gpt-5-mini')`; unset = images go to the main model |
+| `visionModel` | unset | e.g. `openai('gpt-5-mini')`; unset = images go to the main model |
 | `visionPrompt` | see `DEFAULTS` | instruction for `visionModel` |
-| `onOcr` | – | `(confidence, toVision) => void` for every OCR'd image |
+| `onOcr` | unset | `(confidence, toVision) => void` for every OCR'd image |
 | `maxImages` | `20` | pictures per document |
 | `minImagePx` | `48` | smaller pictures (icons, bullets) are dropped |
 | `maxTextChars` | `200000` | plain-text files are cut after this, with a note |
 | `maxFileBytes` | `50 MB` | larger files are not parsed |
 | `cacheMB` | `256` | in-memory cache of parsed files, by sha256 |
-| `liteparse` | – | LiteParse config, e.g. `{ ocrLanguage: 'deu', dpi: 200 }` or `{ poolSize: 1, parseTimeoutMs: 60000 }` |
+| `liteparse` | unset | LiteParse config, e.g. `{ ocrLanguage: 'deu', dpi: 200 }` or `{ poolSize: 1, parseTimeoutMs: 60000 }` |
 | `onError` | `console.warn` | errors that were turned into a note or a passthrough |
 
 Also exported: `FileType`, `mediaTypeOf` (media type from a file name, for files read on the server),
@@ -208,7 +208,7 @@ Examples: [examples/](examples).
 ## Related
 
 - [`@ctxwise/ai-sdk-docling`](https://github.com/ctxwise/ai-sdk-docling): the same middleware backed by a
-  [docling-serve](https://github.com/ctxwise/docling-serve) server instead of an in-process parser — layout
+  [docling-serve](https://github.com/ctxwise/docling-serve) server instead of an in-process parser. It adds layout
   models, picture classification and table structure, at the cost of running a service.
 
 ## License
